@@ -1,0 +1,29 @@
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity ^0.8.0;
+
+import "./SimpleStorage.sol";
+
+contract SimpleFactory{
+    SimpleStorage[] public SimpleStorageArray;
+    
+    function createSImpleStorageContract() public{
+        SimpleStorage simplestorage = new SimpleStorage();
+        SimpleStorageArray.push(simplestorage);
+    }
+    
+    function sfStore(uint256 _simpleStorageIndex, uint256 _simpleStorageNumber, string memory _name) public {
+        SimpleStorage simplestorage = SimpleStorage(address(SimpleStorageArray[_simpleStorageIndex]));
+        simplestorage.store(_simpleStorageNumber, _name);
+    }
+    
+    function sfGet(uint _simpleStorageIndex, uint _favoritenumber) public view returns(string memory){
+        SimpleStorage simplestorage = SimpleStorage(address(SimpleStorageArray[_simpleStorageIndex]));
+        return simplestorage.retrieve(_favoritenumber);
+    }
+    // above function can be done in the same way through below function
+    function anotherWayToGetReturn(uint _simpleStorageIndex,uint _favoritenumber) public view returns(string memory){
+        return SimpleStorage(address(SimpleStorageArray[_simpleStorageIndex])).retrieve(_favoritenumber);
+    }
+    
+}
